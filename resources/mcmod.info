@@ -1,0 +1,16 @@
+[
+{
+  "modid": "lyoko",
+  "name": "Code: CRAFT",
+  "description": "Brining the virtual world of Lyoko to you!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "keegandeathman.site11.com/lyoko.html",
+  "updateUrl": "",
+  "authorList": ["KeeganDeathman", "EnderFurry"],
+  "credits": "The Forge and FML guys, for making the Forge API. Matt, for help. Keegan, for code. Ender, for textures.",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

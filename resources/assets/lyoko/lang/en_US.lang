@@ -1,0 +1,9 @@
+language.name=English
+
+language.region=US
+
+language.code=en_US
+tile.blockUraniumOre.name=Uranium Ore
+tile.blockSuperComputer.name=SuperComputer
+item.itemUraniumDust.name=Uranium Oxide
+item.itemHydroAcid.name=Hydroflouric Acid
