@@ -5,7 +5,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import com.keegan.lyoko.blocks.BlockFlouriteOre;
 import com.keegan.lyoko.blocks.BlockSuperComputer;
 import com.keegan.lyoko.blocks.BlockUraniumOre;
 import com.keegan.lyoko.common.LyokoCommonProxy;
@@ -41,11 +47,15 @@ public class Main
 	public static Block blockScanner;
 	public static Block blockLyoko;
 	public static Block blockUraniumOre;
+	public static Block blockFlouriteOre;
 	public static Block blockCentrifuge;
 	public static Block blockCable;
 	
 	//Items
 	public static Item itemUraniumDust;
+	public static Item itemFlouriteIngot;
+	public static Item itemFlorineBottle;
+	public static Item itemHydrogenCanister;
 	public static Item itemDrum;
 	public static Item itemHydroAcid;
 	public static Item itemUraniumHexa;
@@ -61,6 +71,7 @@ public class Main
 		//Declarations
 		blockUraniumOre = new BlockUraniumOre(Material.rock).setBlockName("blockuraniumOre").setBlockTextureName("lyoko:blockUraniumOre").setCreativeTab(lyokoTab).setHardness(10f);
 		blockSuperComputer = new BlockSuperComputer(Material.iron).setBlockName("blockSuperComputer").setBlockTextureName("lyoko:blockSuperComputer").setCreativeTab(lyokoTab);
+		blockFlouriteOre = new BlockFlouriteOre(Material.rock).setBlockName("blockFloriteOre").setBlockTextureName("lyoko:blockFlourite").setCreativeTab(lyokoTab);
 		
 		itemUraniumDust = new ItemUraniumDust().setCreativeTab(lyokoTab).setTextureName("lyoko:itemUraniumDust").setUnlocalizedName("itemUraniumDust");
 		itemHydroAcid = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemHydroAcid").setTextureName("lyoko:itemHydroAcid");
@@ -69,6 +80,7 @@ public class Main
 		//Registeries
 		GameRegistry.registerBlock(blockUraniumOre, "blockUraniumOre");
 		GameRegistry.registerBlock(blockSuperComputer, "blockSuperComputer");
+		GameRegistry.registerBlock(blockFlouriteOre, "blockFlourite");
 		
 		GameRegistry.registerItem(itemUraniumDust, "itemUraniumDust");
 		GameRegistry.registerItem(itemHydroAcid, "itemHydroAcid");
@@ -81,6 +93,18 @@ public class Main
 		proxy.registerRenders();
 		
 		GameRegistry.registerWorldGenerator(new LyokoOreGen(), 0);
+		
+		oreDict();
+		
+		CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(this.itemHydroAcid), this.itemFlorineBottle, this.itemHydrogenCanister));
+	}
+	
+	private void oreDict()
+	{
+		OreDictionary.registerOre("oreUranium", blockUraniumOre);
+		OreDictionary.registerOre("dustUranium", itemUraniumDust);
+		OreDictionary.registerOre("oreFlourite", blockFlouriteOre);
+		OreDictionary.registerOre("ingotFlourite", itemFlouriteIngot);
 	}
 	
 	@EventHandler
