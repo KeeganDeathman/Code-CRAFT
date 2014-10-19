@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.keegan.lyoko.container.ContainerCentrifuge;
-import com.keegan.tilenenity.TileEntityCentrifuge;
+import com.keegan.lyoko.tilenenity.TileEntityCentrifuge;
 
 public class GuiCentrifuge extends GuiContainer 
 {

@@ -8,7 +8,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import com.keegan.lyoko.slot.SlotCentrifuge;
-import com.keegan.tilenenity.TileEntityCentrifuge;
+import com.keegan.lyoko.tilenenity.TileEntityCentrifuge;
 
 public class ContainerCentrifuge extends Container
 {

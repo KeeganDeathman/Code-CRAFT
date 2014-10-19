@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.keegan.lyoko.container.ContainerCentrifuge;
-import com.keegan.tilenenity.TileEntityCentrifuge;
+import com.keegan.lyoko.tilenenity.TileEntityCentrifuge;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 

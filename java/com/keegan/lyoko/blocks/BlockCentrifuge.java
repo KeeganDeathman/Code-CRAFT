@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import com.keegan.lyoko.Main;
-import com.keegan.tilenenity.TileEntityCentrifuge;
+import com.keegan.lyoko.tilenenity.TileEntityCentrifuge;
 
 public class BlockCentrifuge extends Block implements ITileEntityProvider
 {

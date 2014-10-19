@@ -18,8 +18,8 @@ import com.keegan.lyoko.client.*;
 import com.keegan.lyoko.common.*;
 import com.keegan.lyoko.gui.*;
 import com.keegan.lyoko.items.*;
+import com.keegan.lyoko.tilenenity.*;
 import com.keegan.lyoko.world.*;
-import com.keegan.tilenenity.*;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

@@ -1,4 +1,4 @@
-package com.keegan.tilenenity;
+package com.keegan.lyoko.tilenenity;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import com.keegan.lyoko.common.Recipes;
 public class TileEntityCentrifuge extends TileEntity implements IInventory
 {
 	
-	private ItemStack[] contents  = new ItemStack[2];
+	private ItemStack[] contents;
 	
 	private float startTime;
 	private boolean spinning = false;
@@ -23,6 +23,7 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 	
 	public TileEntityCentrifuge()
 	{
+		contents  = new ItemStack[2];
 		recipes = Recipes.getCentrifuge();
 	}
 	
