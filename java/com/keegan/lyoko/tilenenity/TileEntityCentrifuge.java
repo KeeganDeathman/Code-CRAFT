@@ -75,7 +75,7 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 		{
 			System.out.println(recipes.size());
 			System.out.println(i);
-			if(getStackInSlot(0) == recipes.get(i)[0])
+			if(getStackInSlot(0) != null && getStackInSlot(0).equals(recipes.get(i)[0]))
 			{
 				System.out.println("Beginning spin");
 				startTime = getTime();
