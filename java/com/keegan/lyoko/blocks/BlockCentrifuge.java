@@ -1,5 +1,7 @@
 package com.keegan.lyoko.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -35,5 +37,11 @@ public class BlockCentrifuge extends Block implements ITileEntityProvider
 		return new TileEntityCentrifuge();
 	}
 
+	
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
+		((TileEntityCentrifuge)world.getTileEntity(x, y, z)).completeSpin();
+	}
 
 }

@@ -9,28 +9,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 
-import com.keegan.lyoko.common.Recipes;
+import com.keegan.lyoko.recipes.CentrifugeRecipe;
+import com.keegan.lyoko.recipes.Recipes;
 
 public class TileEntityCentrifuge extends TileEntity implements IInventory
 {
 	
-	private ItemStack[] contents;
+	private ItemStack[] chestContents;
 	
 	private float startTime;
-	private boolean spinning = false;
+	private String spinning = "still";
 	
-	private ArrayList<ItemStack[]> recipes;
+	private int time;
+	
+	private ArrayList<CentrifugeRecipe> recipes;
 	
 	public TileEntityCentrifuge()
 	{
-		contents  = new ItemStack[2];
+		chestContents  = new ItemStack[2];
 		recipes = Recipes.getCentrifuge();
 	}
 	
 	private float getTime()
 	{
 		//Returns time in minutes
-		return System.nanoTime() / 60000000000L;
+		return time;
 	}
 	
 	@Override
@@ -38,9 +41,9 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 	{
 		super.writeToNBT(tagCompound);
 		NBTTagList itemList = new NBTTagList();
-        for (int i = 0; i < this.contents.length; i++)
+        for (int i = 0; i < this.chestContents.length; i++)
         {
-            ItemStack stack = this.contents[i];
+            ItemStack stack = this.chestContents[i];
             if (stack != null)
             {
                 NBTTagCompound tag = new NBTTagCompound();
@@ -50,7 +53,7 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
             }
         }
         tagCompound.setTag("Inventory", itemList);
-        tagCompound.setFloat("startTime", startTime);
+        tagCompound.setString("Spinning", spinning);
 	}
 	
 	@Override
@@ -62,27 +65,49 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
         {
             NBTTagCompound tag = tagList.getCompoundTagAt(i);
             byte slot = tag.getByte("Slot");
-            if (slot >= 0 && slot < this.contents.length)
-                this.contents[slot] = ItemStack.loadItemStackFromNBT(tag);
+            if (slot >= 0 && slot < this.chestContents.length)
+                this.chestContents[slot] = ItemStack.loadItemStackFromNBT(tag);
         }
         startTime = tagCompound.getFloat("startTime");
+        spinning = tagCompound.getString("spinning");
 	}
 	
 	private void spin()
 	{
 		recipes = Recipes.getCentrifuge();
-		for(int i = 0; i < recipes.size(); i++)
-		{
-			System.out.println(recipes.size());
-			System.out.println(i);
-			if(getStackInSlot(0) != null && getStackInSlot(0).equals(recipes.get(i)[0]))
-			{
-				System.out.println("Beginning spin");
-				startTime = getTime();
-				spinning = true;
+		if (spinning.equals("still")) {
+			for (int i = 0; i < recipes.size(); i++) {
+				System.out.println(recipes.size());
+				System.out.println(i);
+				//System.out.println("wanted is not called " + recipes.get(i).getInput().getItem().getUnlocalizedName());
+				if (getStackInSlot(0) != null && getStackInSlot(0).isItemEqual(recipes.get(i).getInput())) 
+				{
+					spinning = "spinning";
+					System.out.println("Beginning spin " + spinning);
+					worldObj.scheduleBlockUpdate(xCoord, yCoord, zCoord, getBlockType(), 6000);
+				}
 			}
 		}
-		
+		else
+		{
+			System.out.println(spinning);
+		}
+	}
+	
+	public void completeSpin()
+	{
+		if(spinning.equals("spinning"))
+		{
+			for(int i = 0; i < recipes.size(); i++)
+			{
+				if(getStackInSlot(0).isItemEqual(recipes.get(i).getInput()))
+				{
+					decrStackSize(0, 1);
+					setInventorySlotContents(1, recipes.get(i).getOutput());
+					spinning = "still";
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -90,34 +115,10 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 	{
 		super.updateEntity();
 		recipes = Recipes.getCentrifuge();
-		if(startTime > 0)
-		{
-			float elapsedTime = getTime() - startTime;
-			System.out.println("Started at " + startTime);
-			System.out.println(elapsedTime + " = elapsed time");
-			if((elapsedTime >= 5) && spinning && startTime > -1)
-			{
-				for(int i = 0; i < recipes.size(); i++)
-				{
-					if(getStackInSlot(0) == recipes.get(i)[0])
-					{
-						startTime = 0;
-						spinning = false;
-						decrStackSize(0, 1);
-						this.setInventorySlotContents(1, recipes.get(i)[1]);
-					}
-				}
-			}
-		}
-		if(getStackInSlot(0) != null)
+		if(getStackInSlot(0) != null && !spinning.equals("spinning"))
 		{
 				System.out.println("Attempting Spin");
 				spin();
-		}
-		else
-		{
-			startTime = 0;
-			spinning = false;
 		}
 	}
 
@@ -157,13 +158,13 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 	@Override
 	public int getSizeInventory() {
 		// TODO Auto-generated method stub
-		return contents.length;
+		return chestContents.length;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		// TODO Auto-generated method stub
-		return contents[slot];
+		return chestContents[slot];
 	}
 
 	@Override
@@ -182,11 +183,11 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 	{
 		for(int i = 0; i < recipes.size(); i++)
 		{
-			if(slot == 0 && stack == recipes.get(i)[0])
+			if(slot == 0 && stack == recipes.get(i).getInput())
 			{
 				return true;
 			}
-			if(slot == 1 && stack == recipes.get(i)[1])
+			if(slot == 1 && stack == recipes.get(i).getOutput())
 			{
 				return true;
 			}
@@ -230,7 +231,7 @@ public class TileEntityCentrifuge extends TileEntity implements IInventory
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack itemstack) {
-		contents[slot] = itemstack;
+		chestContents[slot] = itemstack;
 		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
 		{
 			itemstack.stackSize = getInventoryStackLimit();

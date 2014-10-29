@@ -18,6 +18,7 @@ import com.keegan.lyoko.client.*;
 import com.keegan.lyoko.common.*;
 import com.keegan.lyoko.gui.*;
 import com.keegan.lyoko.items.*;
+import com.keegan.lyoko.recipes.Recipes;
 import com.keegan.lyoko.tilenenity.*;
 import com.keegan.lyoko.world.*;
 
@@ -58,6 +59,8 @@ public class Main
 	public static Item itemUraniumDust;
 	public static Item itemFlouriteIngot;
 	public static Item itemFlorineBottle;
+	public static Item itemEmptyCanister;
+	public static Item itemWaterCanister;
 	public static Item itemHydrogenCanister;
 	public static Item itemDrum;
 	public static Item itemHydroAcid;
@@ -80,7 +83,9 @@ public class Main
 		
 		itemUraniumDust = new ItemUraniumDust().setCreativeTab(lyokoTab).setTextureName("lyoko:itemUraniumDust").setUnlocalizedName("itemUraniumDust");
 		itemHydroAcid = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemHydroAcid").setTextureName("lyoko:itemHydroAcid");
-		itemHydrogenCanister = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemHydrogenCanister").setTextureName("lyoko:itemHydrogenCanister");		
+		itemHydrogenCanister = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemHydrogenCanister").setTextureName("lyoko:itemHydrogenCanister");
+		itemWaterCanister = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemWaterCanister").setTextureName("lyoko:itemWaterCanister");
+		itemEmptyCanister = new Item().setCreativeTab(lyokoTab).setUnlocalizedName("itemEmptyCanister").setTextureName("lyoko:itemEmptyCanister");
 		
 		//Registeries
 		GameRegistry.registerBlock(blockUraniumOre, "blockUraniumOre");
@@ -90,7 +95,9 @@ public class Main
 		
 		GameRegistry.registerItem(itemUraniumDust, "itemUraniumDust");
 		GameRegistry.registerItem(itemHydroAcid, "itemHydroAcid");
+		GameRegistry.registerItem(itemWaterCanister, "itemWaterCanister");
 		GameRegistry.registerItem(itemHydrogenCanister, "itemHydrogenCanister");
+		GameRegistry.registerItem(itemEmptyCanister, "itemEMptyCanister");
 	}
 	
 	@EventHandler
@@ -104,6 +111,8 @@ public class Main
 		oreDict();
 		
 		//CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(this.itemHydroAcid), this.itemFlorineBottle, this.itemHydrogenCanister));
+		GameRegistry.addRecipe(new ItemStack(itemEmptyCanister), " i ", "i i", " i ", 'i', new ItemStack(Items.iron_ingot));
+		GameRegistry.addShapelessRecipe(new ItemStack(itemWaterCanister), new ItemStack(itemEmptyCanister),new ItemStack(Items.water_bucket));
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		GameRegistry.registerTileEntity(TileEntityCentrifuge.class, "Centrifuge");
@@ -120,8 +129,8 @@ public class Main
 	
 	private void registerCentrifugeRecipes()
 	{
-		Recipes.addCentrifugeRecipe(new ItemStack(itemUraniumHexa), new ItemStack(itemU235Hexa));
-		Recipes.addCentrifugeRecipe(new ItemStack(Items.water_bucket), new ItemStack(itemHydrogenCanister));
+		//Recipes.addCentrifugeRecipe(new ItemStack(itemUraniumHexa), new ItemStack(itemU235Hexa));
+		Recipes.addCentrifugeRecipe(new ItemStack(itemWaterCanister), new ItemStack(itemHydrogenCanister));
 	}
 	
 	@EventHandler
